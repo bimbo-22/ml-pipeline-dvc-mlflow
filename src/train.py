@@ -8,11 +8,15 @@ import os
 from sklearn.model_selection import train_test_split,GridSearchCV
 from urllib.parse import urlparse
 import mlflow
+from dotenv import load_dotenv
 
 
-os.environ['MLFLOW_TRACKING_URI'] = "https://dagshub.com/bimbo-22/machine_learning_pipeline.mlflow"
-os.environ['MLFLOW_TRACKING_USERNAME'] = "bimbo-22"
-os.environ['MLFLOW_TRACKING_PASSWORD'] = "ecab5a821a111559ec1e2a91a6a19249fed246e7"
+
+
+mlflow_tracking_uri = os.getenv('MLFLOW_TRACKING_URI')
+mlflow_tracking_username = os.getenv('MLFLOW_TRACKING_USERNAME')
+mlflow_tracking_password = os.getenv('MLFLOW_TRACKING_PASSWORD')
+
 
 def hyperparameter_tuning(X_train,y_train,param_grid):
     rf = RandomForestClassifier()
@@ -29,7 +33,7 @@ def train(data_path,model_path,random_state,n_estimators,max_depth):
     X = data.drop(columns=["Outcome"])
     y = data["Outcome"]
     
-    mlflow.set_tracking_uri(os.environ['MLFLOW_TRACKING_URI'])
+    mlflow.set_tracking_uri(mlflow_tracking_uri)
     
     # start mlflow run 
     with mlflow.start_run():
